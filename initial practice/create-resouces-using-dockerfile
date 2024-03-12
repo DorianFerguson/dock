@@ -1,0 +1,30 @@
+Dockerfile practice.
+
+Create a directory and cd into it
+create docker file.
+
+1. [ docker build -t {tag} . ] #to build image
+
+2. docker images # to check
+
+3. docker volume create {volume name} # create volume
+
+4. docker volume ls # to check 
+docker run -it --name {container}-name -v {volume-name}:/data{<- volume path} -p {ports, use ports defined in dockerfile} {image}
+
+5. #example of writing to volume in shell
+echo " We're in the dock!" >/data/test.txt
+
+6. use docker exec -it {container-name} /bin/bash 
+to log into root user in a split view terminal
+
+7. make sure to cd into the volume directory, then run file to text
+
+8. verify volume mount point output, sudo cat the file path, use the cmd below
+
+docker volume inspect --format '{{.Mountpoint }}' [volume-name]
+or just docker volume inspect {volume name}
+htop = show cpu mem and swp in graph form
+
+docker container ps -a -f status=exited 
+to see existed containers

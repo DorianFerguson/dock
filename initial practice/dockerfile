@@ -1,0 +1,15 @@
+# Insert the base image
+FROM ubuntu:latest
+
+# Configure a working directory
+WORKDIR /app
+
+#install a few packages
+RUN apt-get update && apt-get install -y nano htop nginx
+
+# Expose these ports
+EXPOSE 22
+EXPOSE 80
+
+# Add these commands
+CMD [ "/bin/bash" ]
