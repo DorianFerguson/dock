@@ -1,0 +1,16 @@
+# Use the latest Ubuntu image as the base image
+FROM ubuntu:latest
+
+# Update package lists and install Apache2
+RUN apt-get update && \
+    apt-get install -y apache2
+
+# Copy index.html to the default Apache web root directory
+COPY ./index.html /var/www/html/index.html
+
+# Expose ports 8080 and 80 to allow external access to the Apache web server
+EXPOSE 8080
+EXPOSE 80
+
+# Command to start Apache2 when the container starts
+CMD [ "apachectl", "-D", "FOREGROUND"]
