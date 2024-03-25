@@ -1,0 +1,27 @@
+# Define Docker Compose version and services
+version: '3'
+
+services:
+  # Define the nginx service
+  nginx:
+    # Use the latest nginx image from Docker Hub
+    image: nginx:latest
+    # Expose port 80 on the host and map it to port 80 on the container
+    ports:
+      - "80:80"
+    # Mount the 'web-data' volume to /usr/share/nginx/html in the container
+    volumes:
+      - web-data:/usr/share/nginx/html
+    # Attach the 'webnet' network to the container
+    networks:
+      - webnet
+
+# Define volumes
+volumes:
+  # Define the 'web-data' volume
+  web-data:
+
+# Define networks
+networks:
+  # Define the 'webnet' network
+  webnet:
