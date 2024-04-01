@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Update package lists
+sudo apt-get update
+
+# Install Docker.io package
+sudo apt-get install docker.io -y
+
+# Start the Docker service
+sudo systemctl start docker
+
+# Adjust permissions for Docker socket to allow non-root users to run docker commands
+sudo chmod 666 /var/run/docker.sock
