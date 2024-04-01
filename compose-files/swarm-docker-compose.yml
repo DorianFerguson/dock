@@ -1,0 +1,17 @@
+# Define two services: 'ubuntu' and 'nginx'
+services:
+  # Define a service 'ubuntu' using the latest Ubuntu image, running the command 'sleep infinity'
+  ubuntu:
+    image: ubuntu:latest
+    command: sleep infinity # circumvents ubuntu's tendency of immediate closure upon launch, by commanding it to run idefinitely.
+
+  # Define a service 'nginx' using the latest Nginx image, mapping port 80 of the host to port 80 within the container
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+
+# Define a default network named 'app-net' for inter-service communication
+networks:
+  default:
+    name: app-net # This network will be created using default settings if a network by this name doesn't already exist
