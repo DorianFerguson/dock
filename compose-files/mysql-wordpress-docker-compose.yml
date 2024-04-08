@@ -1,0 +1,66 @@
+services:
+  # Defines a service named "whale" using the MySQL image.
+  whale:
+    image: mysql:latest
+    # Mounts a volume to persist data for the MySQL database.
+    volumes:
+      - whale_data:/var/lib/mysql
+    # Specifies environment variables for configuring the MySQL database.
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    # Specfices ports to be used
+    ports:
+      - "3306:3306"
+    # Specifies secrets used by this service.
+    secrets:
+      - db_root_password
+      - db_password
+    # Specifies the network for this service.
+    networks:
+      - backend-net
+    # Specifies deployment configurations, including the number of replicas.
+    deploy:
+      replicas: 1
+
+  # Defines a service named "wordpress" using the WordPress image.
+  wordpress:
+    depends_on:
+      - whale
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    networks:
+      - frontend-net
+      - backend-net
+    deploy:
+      replicas: 3
+    environment:
+      # Specifies the hostname and port of the MySQL database for WordPress to connect to.
+      WORDPRESS_DB_HOST: whale:3306
+      WORDPRESS_DB_USER: wordpress
+      # Specifies the path to the file containing the password used to connect to the MySQL database.
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+    # Specifies secrets used by this service.
+    secrets:
+      - db_password
+
+# Defines secrets used in the services.
+secrets:
+  db_password:
+    file: db_password.txt
+  db_root_password:
+    file: db_root_password.txt
+
+# Defines networks used by the services.
+networks:
+  frontend-net:
+    driver: overlay  # Specifies the overlay driver for the "frontend-net" network
+  backend-net:
+    driver: overlay  # Specifies the overlay driver for the "backend-net" network
+
+# Defines volumes used by the services.
+volumes:
+  whale_data:
